@@ -1,18 +1,48 @@
 const apiKey = '2858b7833ff2408eaa92ae2bec628ab0';
-const apiUrl =
-  'https://api.openweathermap.org/data/2.5/weather?units=metric&q=';
+const apiUrl = 'https://api.openweathermap.org/data/2.5/weather?units=metric&';
 
 const searchBox = document.querySelector('.search input');
 const searchBtn = document.querySelector('.search button');
 const weatherIcon = document.querySelector('.weather-icon');
 
+async function getWeatherByGeoLocation() {
+  // Получаем текущие координаты пользователя
+  navigator.geolocation.getCurrentPosition(
+    async (position) => {
+      const { latitude, longitude } = position.coords;
+      try {
+        // Отправляем запрос на API OpenWeatherMap, используя полученные координаты
+        const response = await fetch(
+          `${apiUrl}lat=${latitude}&lon=${longitude}&appid=${apiKey}`
+        );
+        const data = await response.json();
+
+        displayWeatherData(data);
+      } catch (error) {
+        console.error('Error fetching weather data:', error);
+      }
+    },
+    (error) => {
+      console.error('Error getting geolocation:', error);
+    }
+  );
+}
+
 async function checkWeather(city) {
-  const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
+  try {
+    const response = await fetch(apiUrl + 'q=' + city + `&appid=${apiKey}`);
+    const data = await response.json();
 
-  let data = await response.json();
+    displayWeatherData(data);
+  } catch (error) {
+    console.error('Error fetching weather data:', error);
+    alert('Произошла ошибка при получении данных о погоде');
+  }
+}
 
+function displayWeatherData(data) {
   if (data.name === undefined) {
-    alert('Придумайте, что-нибудь получше, город с таким названием, не найден');
+    alert('Придумайте, что-нибудь получше, город с таким названием не найден');
     return;
   }
 
@@ -22,18 +52,12 @@ async function checkWeather(city) {
   document.querySelector('.humidity').innerHTML = data.main.humidity + '%';
   document.querySelector('.wind').innerHTML = data.wind.speed + 'km/h';
 
-  if (data.weather[0].main == 'Clouds') {
-    weatherIcon.src = 'images/clouds.png';
-  } else if (data.weather[0].main == 'Rain') {
-    weatherIcon.src = 'images/rain.png';
-  } else if (data.weather[0].main == 'Drizzle') {
-    weatherIcon.src = 'images/drizzle.png';
-  } else if (data.weather[0].main == 'Clear') {
-    weatherIcon.src = 'images/clear.png';
-  } else if (data.weather[0].main == 'Mist') {
-    weatherIcon.src = 'images/mist.png';
+  if (data.weather && data.weather.length > 0) {
+    const weatherType = data.weather[0].main;
+    weatherIcon.src = `images/${weatherType.toLowerCase()}.png`;
   }
 }
+
 function handleSearch() {
   const cityName = searchBox.value.trim();
   if (!/^[\sa-zA-Zа-яА-Я-]+$/.test(cityName)) {
@@ -44,6 +68,7 @@ function handleSearch() {
   }
   checkWeather(cityName);
 }
+
 function handleKeyPress(event) {
   if (event.key === 'Enter') {
     handleSearch();
@@ -52,8 +77,8 @@ function handleKeyPress(event) {
 
 searchBox.value = 'London';
 
-checkWeather(searchBox.value);
+// Получить погоду по геолокации при загрузке страницы
+getWeatherByGeoLocation();
 
 searchBtn.addEventListener('click', handleSearch);
-
 searchBox.addEventListener('keypress', handleKeyPress);
