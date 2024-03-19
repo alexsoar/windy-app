@@ -6,26 +6,28 @@ const searchBtn = document.querySelector('.search button');
 const weatherIcon = document.querySelector('.weather-icon');
 
 async function getWeatherByGeoLocation() {
-  // Получаем текущие координаты пользователя
-  navigator.geolocation.getCurrentPosition(
-    async (position) => {
-      const { latitude, longitude } = position.coords;
-      try {
-        // Отправляем запрос на API OpenWeatherMap, используя полученные координаты
-        const response = await fetch(
-          `${apiUrl}lat=${latitude}&lon=${longitude}&appid=${apiKey}`
-        );
-        const data = await response.json();
+  try {
+    // Получаем текущие координаты пользователя
+    const position = await getCurrentPosition();
+    const { latitude, longitude } = position.coords;
 
-        displayWeatherData(data);
-      } catch (error) {
-        console.error('Error fetching weather data:', error);
-      }
-    },
-    (error) => {
-      console.error('Error getting geolocation:', error);
-    }
-  );
+    // Отправляем запрос на API OpenWeatherMap, используя полученные координаты
+    const response = await fetch(
+      `${apiUrl}lat=${latitude}&lon=${longitude}&appid=${apiKey}`
+    );
+    const data = await response.json();
+
+    displayWeatherData(data);
+  } catch (error) {
+    console.error('Error getting geolocation or weather data:', error);
+    alert('Произошла ошибка при получении геопозиции или данных о погоде');
+  }
+}
+
+async function getCurrentPosition() {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(resolve, reject);
+  });
 }
 
 async function checkWeather(city) {
@@ -75,9 +77,7 @@ function handleKeyPress(event) {
   }
 }
 
-searchBox.value = 'London';
-
-// Получить погоду по геолокации при загрузке страницы
+// Получить геопозицию пользователя и определить погоду в его городе при загрузке страницы
 getWeatherByGeoLocation();
 
 searchBtn.addEventListener('click', handleSearch);
