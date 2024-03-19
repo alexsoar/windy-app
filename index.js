@@ -11,6 +11,11 @@ async function checkWeather(city) {
 
   let data = await response.json();
 
+  if (data.name === undefined) {
+    alert('Придумайте, что-нибудь получше, город с таким названием, не найден');
+    return;
+  }
+
   document.querySelector('.city').innerHTML = data.name;
   document.querySelector('.temperature').innerHTML =
     Math.round(data.main.temp) + '°C';
@@ -30,7 +35,14 @@ async function checkWeather(city) {
   }
 }
 function handleSearch() {
-  checkWeather(searchBox.value);
+  const cityName = searchBox.value.trim();
+  if (!/^[\sa-zA-Zа-яА-Я-]+$/.test(cityName)) {
+    alert(
+      'Пожалуйста не используйте цифры или символы, только если их нет в названии города'
+    );
+    return;
+  }
+  checkWeather(cityName);
 }
 function handleKeyPress(event) {
   if (event.key === 'Enter') {
