@@ -7,6 +7,11 @@ const weatherIcon = document.querySelector('.weather-icon');
 
 async function getWeatherByGeoLocation() {
   try {
+    const options = {
+      enableHighAccuracy: true, // Установка в true для получения более точной позиции за счет использования GPS
+      timeout: 5000, // Максимальное время ожидания ответа (в миллисекундах)
+      maximumAge: 0, // Максимальный возраст кешированных данных (в миллисекундах)
+    };
     // Получаем текущие координаты пользователя
     const position = await getCurrentPosition();
     const { latitude, longitude } = position.coords;
