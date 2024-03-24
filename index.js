@@ -59,7 +59,7 @@ function displayWeatherData(data) {
   document.querySelector('.temperature').innerHTML =
     Math.round(data.main.temp) + '°C';
   document.querySelector('.humidity').innerHTML = data.main.humidity + '%';
-  document.querySelector('.wind').innerHTML = data.wind.speed + 'km/h';
+  document.querySelector('.wind').innerHTML = data.wind.speed;
 
   if (data.weather && data.weather.length > 0) {
     const weatherType = data.weather[0].main;
@@ -103,7 +103,7 @@ function handleSearch() {
   }
   // if (!/^[\sa-zA-Zа-яА-Я-]+$/.test(cityName)) {
   //   alert(
-  //     'Пожалуйста не используйте цифры или символы, только если их нет в названии города'
+  //     'Пожалуйста, не используйте цифры или символы, только если их нет в названии города'
   //   );
   //   return;
   // }
