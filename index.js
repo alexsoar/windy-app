@@ -49,7 +49,7 @@ async function checkWeather(city) {
 
 function displayWeatherData(data) {
   if (data.name === undefined) {
-    alert('Придумайте, что-нибудь получше, город с таким названием не найден');
+    alert('К сожалению, такой город не найден');
     return;
   }
 
@@ -67,6 +67,10 @@ function displayWeatherData(data) {
 
 function handleSearch() {
   const cityName = searchBox.value.trim();
+  if (cityName === '') {
+    alert('Введите пожалуйста название города.');
+    return;
+  }
   if (!/^[\sa-zA-Zа-яА-Я-]+$/.test(cityName)) {
     alert(
       'Пожалуйста не используйте цифры или символы, только если их нет в названии города'
