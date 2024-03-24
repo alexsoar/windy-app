@@ -25,6 +25,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
 }
 .search input {
   border: 0;
@@ -96,6 +97,10 @@ body {
   border-top: none;
   border-radius: 0 0 5px 5px;
   width: calc(100% - 2px);
+  left: 0;
+  right: 0;
+  top: calc(100% + 2px);
+  color: #222;
 }
 
 .autocomplete-item {
