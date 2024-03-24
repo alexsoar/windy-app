@@ -31,7 +31,7 @@ body {
   outline: 0;
   background: #ebfffc;
   color: #555;
-  padding: 10px 15px;
+  text-align: center;
   height: 60px;
   border-radius: 30px;
   flex: 1;
@@ -67,7 +67,7 @@ body {
 .details {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   margin-top: 50px;
 }
 .col {
