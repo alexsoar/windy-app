@@ -31,7 +31,7 @@ body {
   outline: 0;
   background: #ebfffc;
   color: #555;
-  padding: 10px 17px;
+  padding: 10px 10px;
   height: 60px;
   border-radius: 30px;
   flex: 1;
@@ -68,13 +68,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
   margin-top: 50px;
 }
 .col {
   display: flex;
   align-items: center;
   text-align: left;
+  padding: 15px;
 }
 .col img {
   width: 40px;
