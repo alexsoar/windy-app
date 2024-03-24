@@ -1,9 +1,11 @@
 const apiKey = '2858b7833ff2408eaa92ae2bec628ab0';
+const apigeoKey = '8ec61f23bebc4b0a8efae22ee2f04573';
 const apiUrl = 'https://api.openweathermap.org/data/2.5/weather?units=metric&';
 
 const searchBox = document.querySelector('.search input');
 const searchBtn = document.querySelector('.search button');
 const weatherIcon = document.querySelector('.weather-icon');
+const autocompleteContainer = document.querySelector('.autocomplete');
 
 async function getWeatherByGeoLocation() {
   try {
@@ -65,18 +67,46 @@ function displayWeatherData(data) {
   }
 }
 
+async function fetchAutocompleteSuggestions(cityName) {
+  try {
+    const response = await fetch(
+      `https://api.opencagedata.com/geocode/v1/json?q=${cityName}&key=${apigeoKey}`
+    );
+    const data = await response.json();
+    return data.results.map((result) => result.formatted);
+  } catch (error) {
+    console.error('Error fetching autocomplete suggestions:', error);
+    return [];
+  }
+}
+
+function showAutocompleteSuggestions(suggestions) {
+  autocompleteContainer.innerHTML = '';
+  suggestions.forEach((suggestion) => {
+    const suggestionElement = document.createElement('div');
+    suggestionElement.classList.add('autocomplete-item');
+    suggestionElement.textContent = suggestion;
+    suggestionElement.addEventListener('click', () => {
+      searchBox.value = suggestion;
+      handleSearch();
+      autocompleteContainer.innerHTML = '';
+    });
+    autocompleteContainer.appendChild(suggestionElement);
+  });
+}
+
 function handleSearch() {
   const cityName = searchBox.value.trim();
   if (cityName === '') {
     alert('Введите пожалуйста название города.');
     return;
   }
-  if (!/^[\sa-zA-Zа-яА-Я-]+$/.test(cityName)) {
-    alert(
-      'Пожалуйста не используйте цифры или символы, только если их нет в названии города'
-    );
-    return;
-  }
+  // if (!/^[\sa-zA-Zа-яА-Я-]+$/.test(cityName)) {
+  //   alert(
+  //     'Пожалуйста не используйте цифры или символы, только если их нет в названии города'
+  //   );
+  //   return;
+  // }
   checkWeather(cityName);
 }
 
@@ -85,6 +115,16 @@ function handleKeyPress(event) {
     handleSearch();
   }
 }
+// Обработчик ввода текста в поле поиска
+searchBox.addEventListener('input', async () => {
+  const cityName = searchBox.value.trim();
+  if (cityName === '') {
+    autocompleteContainer.innerHTML = '';
+    return;
+  }
+  const suggestions = await fetchAutocompleteSuggestions(cityName);
+  showAutocompleteSuggestions(suggestions);
+});
 
 // Получить геопозицию пользователя и определить погоду в его городе при загрузке страницы
 getWeatherByGeoLocation();
