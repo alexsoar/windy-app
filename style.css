@@ -93,7 +93,6 @@ body {
   max-height: 150px;
   overflow-y: auto;
   z-index: 1000;
-  border: 1px solid #ccc;
   border-top: none;
   border-radius: 0 0 5px 5px;
   width: calc(100% - 2px);
