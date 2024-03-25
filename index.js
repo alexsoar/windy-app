@@ -104,7 +104,7 @@ function showAutocompleteSuggestions(suggestions) {
 function handleSearch() {
   const cityName = searchBox.value.trim();
   if (cityName === '') {
-    alert('Введите пожалуйста название города.');
+    alert('Пожалуйста, введите название города.');
     return;
   }
   // if (!/^[\sa-zA-Zа-яА-Я-]+$/.test(cityName)) {
