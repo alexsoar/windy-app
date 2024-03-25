@@ -59,7 +59,7 @@ function displayWeatherData(data) {
   document.querySelector('.temperature').innerHTML =
     Math.round(data.main.temp) + '°C';
   document.querySelector('.humidity').innerHTML = data.main.humidity + '%';
-  document.querySelector('.wind').innerHTML = data.wind.speed;
+  document.querySelector('.wind').innerHTML = data.wind.speed + ' m/s';
 
   if (data.weather && data.weather.length > 0) {
     const weatherType = data.weather[0].main;
@@ -70,10 +70,16 @@ function displayWeatherData(data) {
 async function fetchAutocompleteSuggestions(cityName) {
   try {
     const response = await fetch(
-      `https://api.opencagedata.com/geocode/v1/json?q=${cityName}&key=${apigeoKey}`
+      `https://api.opencagedata.com/geocode/v1/json?q=${cityName}&key=${apigeoKey}&types=city$address_only=1$abbrv=1$no_annotations=1`
     );
     const data = await response.json();
-    return data.results.map((result) => result.formatted);
+    // Фильтрация результатов
+    const filteredResults = data.results.filter((result) => {
+      // Проверяем, что возвращенный результат не содержит индекс или название улицы
+      return !result.components.postcode && !result.components.road;
+    });
+
+    return filteredResults.map((result) => result.formatted);
   } catch (error) {
     console.error('Error fetching autocomplete suggestions:', error);
     return [];
