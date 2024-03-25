@@ -70,12 +70,12 @@ function displayWeatherData(data) {
 async function fetchAutocompleteSuggestions(cityName) {
   try {
     const response = await fetch(
-      `https://api.opencagedata.com/geocode/v1/json?q=${cityName}&key=${apigeoKey}&types=city$address_only=1$abbrv=1$no_annotations=1`
+      `https://api.opencagedata.com/geocode/v1/json?q=${cityName}&key=${apigeoKey}&types=city&address_only=1&abbrv=1&no_annotations=1`
     );
     const data = await response.json();
     // Фильтрация результатов
     const filteredResults = data.results.filter((result) => {
-      // Проверяем, что возвращенный результат не содержит индекс или название улицы
+      // Исключаем результаты, где есть компоненты 'postcode', 'road', 'country' или 'state'
       return !result.components.postcode && !result.components.road;
     });
 
@@ -121,6 +121,9 @@ function handleKeyPress(event) {
     handleSearch();
   }
 }
+searchBox.addEventListener('input', () => {
+  searchBox.value = searchBox.value.replace(/\d/g, ''); // Удаляем все цифры из введенной строки
+});
 // Обработчик ввода текста в поле поиска
 searchBox.addEventListener('input', async () => {
   const cityName = searchBox.value.trim();
