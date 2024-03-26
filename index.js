@@ -60,6 +60,7 @@ function displayWeatherData(data) {
     Math.round(data.main.temp) + '°C';
   document.querySelector('.humidity').innerHTML = data.main.humidity + '%';
   document.querySelector('.wind').innerHTML = data.wind.speed + ' m/s';
+  document.querySelector('.weather').style.display = 'block';
 
   if (data.weather && data.weather.length > 0) {
     const weatherType = data.weather[0].main;
