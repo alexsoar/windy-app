@@ -1,6 +1,7 @@
 const apiKey = '2858b7833ff2408eaa92ae2bec628ab0';
 const apigeoKey = '8ec61f23bebc4b0a8efae22ee2f04573';
-const apiUrl = 'https://api.openweathermap.org/data/2.5/weather?units=metric&';
+const apiUrl =
+  'https://api.openweathermap.org/data/2.5/weather?units=metric&lang=ru&';
 
 const searchBox = document.querySelector('.search input');
 const searchBtn = document.querySelector('.search button');
@@ -61,6 +62,13 @@ function displayWeatherData(data) {
   document.querySelector('.humidity').innerHTML = data.main.humidity + '%';
   document.querySelector('.wind').innerHTML = data.wind.speed + ' m/s';
   document.querySelector('.weather').style.display = 'block';
+  document.querySelector('.feels-like').innerHTML =
+    'Feels like ' +
+    Math.round(data.main.feels_like) +
+    '°C. ' +
+    data.weather[0].description.charAt(0).toUpperCase() +
+    data.weather[0].description.slice(1) +
+    '. ';
 
   if (data.weather && data.weather.length > 0) {
     const weatherType = data.weather[0].main;
