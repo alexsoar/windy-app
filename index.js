@@ -1,7 +1,6 @@
 const apiKey = '2858b7833ff2408eaa92ae2bec628ab0';
 const apigeoKey = '8ec61f23bebc4b0a8efae22ee2f04573';
-const apiUrl =
-  'https://api.openweathermap.org/data/2.5/weather?units=metric&lang=ru&';
+const apiUrl = 'https://api.openweathermap.org/data/2.5/weather?units=metric&';
 
 const searchBox = document.querySelector('.search input');
 const searchBtn = document.querySelector('.search button');
@@ -61,6 +60,9 @@ function displayWeatherData(data) {
     Math.round(data.main.temp) + '°C';
   document.querySelector('.humidity').innerHTML = data.main.humidity + '%';
   document.querySelector('.wind').innerHTML = data.wind.speed + ' m/s';
+  document.querySelector('.pressure').innerHTML = +data.main.pressure + ' hPa';
+  document.querySelector('.visibility').innerHTML =
+    'Visibility: ' + data.visibility / 1000 + ' km';
   document.querySelector('.weather').style.display = 'block';
   document.querySelector('.feels-like').innerHTML =
     'Feels like ' +
@@ -84,7 +86,7 @@ async function fetchAutocompleteSuggestions(cityName) {
     const data = await response.json();
     // Фильтрация результатов
     const filteredResults = data.results.filter((result) => {
-      // Исключаем результаты, где есть компоненты 'postcode', 'road', 'country' или 'state'
+      // Исключаем результаты, где есть компоненты 'postcode', 'road'
       return !result.components.postcode && !result.components.road;
     });
 
