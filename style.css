@@ -40,6 +40,9 @@ body {
   font-size: 18px;
   padding: 10px;
 }
+.search input::placeholder {
+  font-size: 14px;
+}
 .search button {
   border: 0;
   outline: 0;
@@ -138,3 +141,5 @@ body {
   font-size: 20px;
   color: #ffff80;
 }
+
+/* background: linear-gradient(135deg, #65c2e4, #ffa100); - если хорошая солнечная погода */
