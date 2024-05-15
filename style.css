@@ -15,7 +15,7 @@ body {
   min-width: 370px;
   background: linear-gradient(135deg, #313a44, #6a5cc3);
   color: #fff;
-  margin: 100px auto 0;
+  margin: 50px auto 0;
   border-radius: 20px;
   padding: 40px 35px;
   text-align: center;
@@ -76,6 +76,7 @@ body {
 }
 .weather {
   display: none;
+  height: 100%;
 }
 .weather-icon {
   width: 170px;
@@ -140,6 +141,32 @@ body {
 .feels-like {
   font-size: 20px;
   color: #ffff80;
+}
+/* Iphone 12 Pro + */
+@media only screen and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) {
+  .weather h2 {
+    font-size: 50px;
+  }
+  .humidity,
+  .wind,
+  .pressure,
+  .visibility {
+    font-size: 20px;
+    margin-top: -6px;
+  }
+  .wrapper {
+    margin: 20px auto;
+  }
+}
+/* Ipad Pro */
+@media only screen and (min-device-width: 1024px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) {
+  .weather h2 {
+    font-size: 50px;
+  }
+  .wrapper {
+    max-width: 1000px;
+    min-height: 1280px;
+  }
 }
 
 /* background: linear-gradient(135deg, #65c2e4, #ffa100); - если хорошая солнечная погода */
